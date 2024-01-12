@@ -9,10 +9,9 @@ WORKDIR /usr/src/app
 
 # Copy over `package.json` and lock files to optimize the build process
 COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
-# Install Node modules
-RUN yarn
-
 # Copy over rest of the project files
 COPY . .
+# Install Node modules
+RUN yarn install
 
 RUN yarn build
