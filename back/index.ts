@@ -36,7 +36,7 @@ const proxy = httpProxy.createProxyServer(
 app.post('/api/vote', async (req, res) => {
 	// console.log("ip:", req.socket.remoteAddress)
 	let data = req.body as {chosenMovies: { title: string, ip: string }[] , token: string } 
-	// console.log(vote)
+	console.log(data)
 	let vote = data.chosenMovies
 	if (vote.length !== 5) {
 		res.status(400).send('wrong number of movies')
