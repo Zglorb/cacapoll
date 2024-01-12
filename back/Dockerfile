@@ -4,7 +4,7 @@ FROM oven/bun:1 as base
 WORKDIR /usr/src/app
 
 # copy over package.json and lock files to optimize the build process
-COPY ["./index.ts", "./package.json", "./tsconfig.json", "./"]
+COPY ["./index.ts", "./package.json", "./tsconfig.json", "./client_secret.json", "./"]
 
 # install bun dependencies
 RUN bun install

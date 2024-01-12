@@ -12,8 +12,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    volumes:
-      - ./back:/usr/src/app
   nginx:
     image: nginx:1.24
     volumes:
