@@ -4,6 +4,8 @@ import http from 'http'
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { JWT } from 'google-auth-library'
 import creds from './client_secret.json';
+import axios from 'axios';
+import qs from 'qs';
 const app = express()
 const server = http.createServer(app)
 const vote: string[] = []
@@ -32,9 +34,22 @@ const proxy = httpProxy.createProxyServer(
 )
 
 app.post('/api/vote', async (req, res) => {
-	console.log("ip:", req.socket.remoteAddress)
-	let vote = req.body as { title: string, ip: string }[]
+	// console.log("ip:", req.socket.remoteAddress)
+	let data = req.body as {chosenMovies: { title: string, ip: string }[] , token: string } 
 	// console.log(vote)
+	let vote = data.chosenMovies
+	if (vote.length !== 5) {
+		res.status(400).send('wrong number of movies')
+		return
+	}
+	let response = await axios.post('https://www.google.com/recaptcha/api/siteverify', qs.stringify({
+		secret: '6LeYSU8pAAAAAGuAfQfnxCS0RcwQiKJucf3ZnKFK',
+		response: data.token
+	}), { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+	if (!response.data.success) {
+		res.status(400).send('bot detected')
+		return
+	}
 	for (let i = 0; i < vote.length; i++) {
 		const sheet = doc.sheetsByIndex[i];
 		sheet.addRow(vote[i]);

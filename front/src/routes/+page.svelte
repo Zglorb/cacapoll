@@ -33,15 +33,19 @@
 			thisYear: true,
 			movie: false
 		}]
-
+		
 		async function vote() {
 			if (isVoteEmpty()) return
 			if (waiting) return
-			waiting = true
-			await axios.post("/api/vote", chosenMovies)
-			waiting = false
-			window.localStorage.setItem("voted", "true")
-			goto("/voted")
+			waiting = true;
+			(window as any).grecaptcha.ready(function() {
+				(window as any).grecaptcha.execute('6LeYSU8pAAAAAAu26b2PxzggAFetHQxbQ3zXVYqr', {action: 'submit'}).then(async (token: string) => {
+					axios.post("/api/vote", {chosenMovies, token})
+					waiting = false
+					window.localStorage.setItem("voted", "true")
+					goto("/voted")
+				});
+			});
 		}
 		if (browser) {
 			if (window.localStorage.getItem("voted") === "true") {
@@ -75,8 +79,7 @@
 
 <div class="flex w-full justify-center items-center">
 	{#if !hasChosen}
-		<div class="h-captcha" data-sitekey="2cef7bb0-02f1-4b52-989c-1af1e683c829"></div>
-		<button class="transition ease-in-out bg-black border text-amber-200 border-amber-200 rounded mt-5 h-10 w-20 hover:text-black hover:bg-amber-200" on:click={vote}>VOTER</button>
+		<button data-sitekey="6LeYSU8pAAAAAAu26b2PxzggAFetHQxbQ3zXVYqr" data-callback='onSubmit' data-action='submit' class="g-recaptcha transition ease-in-out bg-black border text-amber-200 border-amber-200 rounded mt-5 h-10 w-20 hover:text-black hover:bg-amber-200" on:click={vote}>VOTER</button>
 	{:else}
 		<button class="bg-black border text-amber-200 border-amber-200 rounded mt-5 h-10 w-20" disabled={chosenMovies.length != 0} >VOTER</button>
 	{/if}
