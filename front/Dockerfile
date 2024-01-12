@@ -2,7 +2,7 @@
 FROM node:20.10
 
 # Set the Node environment to development to ensure all packages are installed
-ENV NODE_ENV production
+ENV NODE_ENV development
 
 # Change our current working directory
 WORKDIR /usr/src/app
