@@ -1,0 +1,28 @@
+version: '3'
+services:
+  front:
+    build: 
+      context: ./front
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+      - "24678:24678"
+    volumes:
+      - ./front:/usr/src/app
+  back:
+    build: 
+      context: ./back
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./back:/usr/src/app
+  nginx:
+    image: nginx:1.24
+    volumes:
+      - ./nginx/dev.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "8080:8080"
+    depends_on:
+      - front
+      - back

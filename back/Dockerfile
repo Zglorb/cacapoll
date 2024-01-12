@@ -1,0 +1,12 @@
+# use the official Bun image
+# see all versions at https://hub.docker.com/r/oven/bun/tags
+FROM oven/bun:1 as base
+WORKDIR /usr/src/app
+
+# copy over package.json and lock files to optimize the build process
+COPY ["./index.ts", "./package.json", "./tsconfig.json", "./"]
+
+# install bun dependencies
+RUN bun install
+
+CMD [ "bun" , "run", "start"]
