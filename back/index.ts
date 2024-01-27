@@ -38,7 +38,7 @@ app.post('/api/vote', async (req, res) => {
 	let data = req.body as {chosenMovies: { title: string, ip: string }[] , token: string } 
 	console.log(data)
 	let vote = data.chosenMovies
-	if (vote.length !== 5) {
+	if (vote.length < 3) {
 		res.status(400).send('wrong number of movies')
 		return
 	}
@@ -58,7 +58,7 @@ app.post('/api/vote', async (req, res) => {
 })
 
 setInterval(() => {
-	for(let i = 0; i < 5; i++) {
+	for(let i = 0; i < 3; i++) {
 		const sheet = doc.sheetsByIndex[i];
 		sheet.saveUpdatedCells();
 	}

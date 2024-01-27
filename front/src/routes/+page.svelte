@@ -10,29 +10,20 @@
 	let categories = [
 		{
 			title:"Coup de Coeur",
-			thisYear: true,
-			movie: true
-		},
-		{
-			title:"Flop Film",
-			thisYear: true,
-			movie: true
-		},
-		{
-			title:"Top Film",
-			thisYear: true,
-			movie: true
-		},
-		{
-			title:"Top film HORS 2023",
 			thisYear: false,
 			movie: true
 		},
 		{
-			title:"Top Série",
-			thisYear: true,
-			movie: false
-		}]
+			title:"Flop Film",
+			thisYear: false,
+			movie: true
+		},
+		{
+			title:"Top Film",
+			thisYear: false,
+			movie: true
+		}
+	]
 		
 		async function vote() {
 			if (isVoteEmpty()) return
